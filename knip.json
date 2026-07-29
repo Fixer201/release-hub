@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/knip/schema.json",
+  "project": ["src/**/*.{ts,tsx,css}"],
+  "ignoreDependencies": ["@prisma/client", "@types/pg", "pg"],
+  "rules": {
+    "files": "error",
+    "dependencies": "error",
+    "devDependencies": "error",
+    "unlisted": "error",
+    "exports": "error",
+    "types": "error",
+    "nsExports": "error",
+    "nsTypes": "error",
+    "duplicates": "error",
+    "enumMembers": "error"
+  }
+}
