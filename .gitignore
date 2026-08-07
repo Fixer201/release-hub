@@ -10,6 +10,12 @@
 !.yarn/releases
 !.yarn/versions
 
+# AI Skills
+skills-lock.json
+.agents
+.claude
+.windsurf
+
 # testing
 /coverage
 
