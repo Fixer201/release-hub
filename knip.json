@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/knip/schema.json",
-  "project": ["src/**/*.{ts,tsx,css}"],
+  "project": ["src/**/*.{ts,tsx,css}", "prisma/**/*.prisma"],
   "ignoreDependencies": ["@prisma/client", "@types/pg", "pg"],
   "rules": {
     "files": "error",

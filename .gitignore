@@ -25,7 +25,7 @@
 *.pem
 
 # debug
-npm-debug.log*
+bun-error.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
@@ -42,7 +42,7 @@ yarn-error.log*
 next-env.d.ts
 
 # prisma
-/src/generated/prisma/
+generated/**
 
 # tooling
 .eslintcache

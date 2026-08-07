@@ -1,4 +1,3 @@
-import cspellPlugin from '@cspell/eslint-plugin'
 import eslintReact from '@eslint-react/eslint-plugin'
 import jsPlugin from '@eslint/js'
 import nextPlugin from '@next/eslint-plugin-next'
@@ -16,6 +15,7 @@ import securityPlugin from 'eslint-plugin-security'
 import sonarjsPlugin from 'eslint-plugin-sonarjs'
 import tailwindcssPlugin from 'eslint-plugin-tailwindcss'
 import unicornModule from 'eslint-plugin-unicorn'
+import jsdocPlugin from 'eslint-plugin-jsdoc'
 
 const unicornPlugin = unicornModule.default ?? unicornModule
 const sourceFiles = ['src/**/*.{ts,tsx}', 'prisma/**/*.ts', 'next.config.ts', 'prisma.config.ts']
@@ -25,15 +25,41 @@ export default [
   {
     ignores: [
       '.next/**',
+      '.agents/**',
+      '.claude/**',
+      '.windsurf/**',
       'build/**',
       'coverage/**',
       'dist/**',
+      'generated/**',
       'node_modules/**',
       'out/**',
       'public/**',
-      'src/generated/**',
       'next-env.d.ts',
     ],
+  },
+
+  {
+    files: ['src/lib/**/*.ts', 'src/app/**/action*.ts'],
+    plugins: {
+      jsdoc: jsdocPlugin,
+    },
+    rules: {
+      'jsdoc/require-jsdoc': [
+        'warn',
+        {
+          publicOnly: false,
+          require: {
+            FunctionDeclaration: true,
+            ArrowFunctionExpression: true,
+            FunctionExpression: false,
+            MethodDefinition: false,
+            ClassDeclaration: false,
+            ClassExpression: false,
+          },
+        },
+      ],
+    },
   },
 
   jsPlugin.configs.recommended,
@@ -64,7 +90,6 @@ export default [
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
-      cspell: cspellPlugin,
       'no-secrets': noSecretsPlugin,
       perfectionist: perfectionistPlugin,
       prisma: prismaPlugin,
@@ -90,16 +115,6 @@ export default [
       '@typescript-eslint/strict-boolean-expressions': 'warn',
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
-      'cspell/spellchecker': [
-        'warn',
-        {
-          checkComments: true,
-          checkIdentifiers: true,
-          checkJSXText: true,
-          checkStrings: false,
-          cspell: { words: ['Millis', 'Turbopack'] },
-        },
-      ],
       'no-console': ['warn', { allow: ['error', 'warn'] }],
       'no-secrets/no-secrets': ['error', { ignoreContent: '^https', tolerance: 4.2 }],
       'perfectionist/sort-imports': [
@@ -123,6 +138,7 @@ export default [
       'promise/valid-params': 'warn',
       'security/detect-object-injection': 'off',
       'sonarjs/cognitive-complexity': ['warn', 15],
+      'sonarjs/todo-tag': 'warn',
       'tailwindcss/classnames-order': 'warn',
       'tailwindcss/enforces-negative-arbitrary-values': 'warn',
       'tailwindcss/enforces-shorthand': 'warn',
@@ -166,7 +182,7 @@ export default [
   },
 
   {
-    files: ['src/**/*.{ts,tsx}', 'prisma/seed.ts'],
+    files: ['src/**/*.{ts,tsx}'],
     rules: {
       'prisma/no-snake-case-in-ts': 'warn',
       'prisma/no-unsafe': 'error',
@@ -174,10 +190,10 @@ export default [
     },
   },
   {
-    files: ['prisma/seed.ts', '**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
+    files: ['src/app/**/action*.ts'],
     rules: {
-      '@typescript-eslint/no-floating-promises': 'off',
-      'no-console': 'off',
+      '@typescript-eslint/require-await': 'off',
+      'security/detect-possible-timing-attacks': 'off',
     },
   },
 ]

@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,7 +15,6 @@ enum ProjectStatus {
   @@map("project_status")
 }
 
-
 enum EnvironmentType {
   DEVELOPMENT @map("development")
   STAGING     @map("staging")
@@ -23,7 +23,6 @@ enum EnvironmentType {
   @@map("environment_type")
 }
 
-
 enum EnvironmentStatus {
   UNKNOWN     @map("unknown")
   AVAILABLE   @map("available")
@@ -31,7 +30,6 @@ enum EnvironmentStatus {
 
   @@map("environment_status")
 }
-
 
 enum ApkReleaseStatus {
   UPLOADING  @map("uploading")
@@ -48,12 +46,27 @@ model User {
   username     String       @unique
   passwordHash String       @map("password_hash")
   email        String       @unique
+  sessions     Session[]
   projects     Project[]
   apkReleases  ApkRelease[]
   createdAt    DateTime     @default(now()) @map("created_at")
   updatedAt    DateTime     @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  tokenHash String   @unique @map("token_hash")
+  userId    String   @map("user_id") @db.Uuid
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
 }
 
 model ProjectGroup {
