@@ -34,7 +34,8 @@ function Title({ mode }: Readonly<{ mode: AuthMode }>) {
 }
 
 const INITIAL_STATE: AuthState = {
-  error: null,
+  status: 'idle',
+  message: null,
 }
 
 export default function LoginComponent({ mode, action }: Readonly<LoginComponentProps>) {
@@ -101,11 +102,15 @@ export default function LoginComponent({ mode, action }: Readonly<LoginComponent
         </>
       )}
 
-      {state.error !== null && (
-        <p aria-live="assertive" className="text-red-500">
-          {state.error}
+      {state.message !== null && (
+        <p
+          aria-live={state.status === 'error' ? 'assertive' : 'polite'}
+          className={state.status === 'error' ? 'text-red-500' : 'text-yellow-500'}
+        >
+          {state.message}
         </p>
       )}
+
       {/* TODO: Implement loading circle animation on pending */}
       <button
         className="mt-4 rounded bg-white p-2 text-black transition-colors duration-200 hover:bg-black hover:text-white"
